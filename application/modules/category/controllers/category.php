@@ -59,29 +59,32 @@ class Category extends CI_Controller {
 				$image_brands = $_FILES['image']['name'];
 				// Konfigurasi Upload Gambar	
 				$config['file_name'] = $image_brands;
-				$config['upload_path'] = './assets/image_category';
+				$config['upload_path'] = './assets/content/image-category/';
 				$config['allowed_types'] = 'jpg|jpeg|png';
+        		$config['overwrite'] = 'TRUE';
 				$config['max_size']	= '3024';
 				$config['max_width']  = '1600';
 				$config['max_height']  = '1200';
 
 				// Memuat Library Upload File
 				$this->load->library('upload', $config);
-				$this->upload->initialize($config);
-				$this->upload->do_upload('image');
-				$data = array('upload_data' => $this->upload->data());
-				
-				$get_name = $this->upload->data();
-				$nama_file = $get_name['file_name'];
-
-				$data = array(
-				'category_name' => $this->input->post('category_name'),
-				'level' => $this->input->post('level'),
-				'ref_category' => $this->input->post('ref_category'),
-				'image' => $nama_file
-				);
+				if(!$this->upload->do_upload('image')){
+					echo print_r($json = array('status'=>0, 'alert'=>$this->upload->display_errors()));
+				}
+				else{
+					$data = array('upload_data' => $this->upload->data());
 					
-				$this->category_model->add($data);
+					$get_name = $this->upload->data();
+					$nama_file = $get_name['file_name'];
+
+					$data = array(
+						'category_name' => $this->input->post('category_name'),
+						'level' => $this->input->post('level'),
+						'ref_category' => $this->input->post('ref_category'),
+						'image' => $nama_file
+					);
+					$this->category_model->add($data);
+				}
 			}
 			else
 			{
@@ -107,10 +110,42 @@ class Category extends CI_Controller {
 	function update()
 	{
 		$id = $this->input->post('id');
-		$data = array(
-			'category_name' => $this->input->post('category_name')
-			);
-		$this->category_model->update($data, $id);
+		if($this->input->post('level')=="3")
+			{
+				$image_brands = $_FILES['image']['name'];
+				// Konfigurasi Upload Gambar	
+				$config['file_name'] = $image_brands;
+				$config['upload_path'] = './assets/content/image-category/';
+				$config['allowed_types'] = 'jpg|jpeg|png';
+        		$config['overwrite'] = 'TRUE';
+				$config['max_size']	= '3024';
+				$config['max_width']  = '1600';
+				$config['max_height']  = '1200';
+
+				// Memuat Library Upload File
+				$this->load->library('upload', $config);
+				if(!$this->upload->do_upload('image')){
+					echo print_r($json = array('status'=>0, 'alert'=>$this->upload->display_errors()));
+				}
+				else{
+					$data = array('upload_data' => $this->upload->data());
+					
+					$get_name = $this->upload->data();
+					$nama_file = $get_name['file_name'];
+
+					$data = array(
+						'category_name' => $this->input->post('category_name'),
+						'image' => $nama_file
+					);
+					echo $config['upload_path'];
+					$this->category_model->update($data,$id);
+				}
+			}else{
+				$data = array(
+					'category_name' => $this->input->post('category_name')
+				);
+				$this->category_model->update($data, $id);
+			}
 	}
 	
 	function upload()

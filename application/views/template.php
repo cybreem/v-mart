@@ -22,6 +22,9 @@
 
     <!-- Custom Fonts -->
     <link href="<?php echo config_item('assets'); ?>font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+    <link rel="stylesheet" href="<?php echo config_item('assets'); ?>css/jquery.gritter.css">
+
     <link rel="stylesheet" href="<?php echo config_item('assets'); ?>redactor/redactor.css">
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
@@ -132,7 +135,7 @@
 
     <!-- jQuery -->
     <script src="<?php echo config_item('assets'); ?>js/jquery.js"></script>
-
+    <script src="<?php echo config_item('assets')?>js/ajaxfileupload.js"></script>
     <!-- Bootstrap Core JavaScript -->
     <script src="<?php echo config_item('assets'); ?>js/bootstrap.min.js"></script>
 
@@ -140,6 +143,7 @@
     <script src="<?php echo config_item('assets'); ?>js/plugins/morris/raphael.min.js"></script>
     <script src="<?php echo config_item('assets'); ?>js/plugins/morris/morris.min.js"></script>
     <script src="<?php echo config_item('assets'); ?>js/plugins/morris/morris-data.js"></script>
+    <script src="<?php echo config_item('assets'); ?>js/jquery.gritter.min.js"></script>
     <script src="<?php echo config_item('assets'); ?>redactor/redactor.min.js"></script>
     <script src="<?php echo config_item('assets'); ?>redactor/table.js"></script>
         <script src="<?php echo config_item('assets'); ?>redactor/bufferButtons.js"></script>
@@ -148,7 +152,16 @@
     <div id="myModal-sm" class="modal fade bs-example-modal-sm"></div>
         <?php echo $script ?>
         <script>
-
+        // gritter notification
+        function gritter_alert(msg) {
+            $.gritter.add({
+                text : msg
+            });
+            return false;
+        }
+            <?php if($this->session->flashdata('alert')) : ?>
+                gritter_alert('<?php echo $this->session->flashdata('alert') ?>');
+            <?php endif; ?>
             $('.redactor-editor').redactor();
         </script>
 

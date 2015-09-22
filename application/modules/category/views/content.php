@@ -6,7 +6,7 @@
                         </h1>
                         <ol class="breadcrumb">
                             <li class="active">
-                                <i class="fa fa-dashboard"></i>Module
+                                <i class="fa fa-dashboard"></i> Module
                             </li>
                         </ol>
                     </div>

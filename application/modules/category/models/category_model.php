@@ -41,7 +41,7 @@ class Category_model extends CI_Model {
 
 	function edit($id)
 	{
-		$this->db->select('category_name')
+		$this->db->select('category_name, level, image')
 			->from('tb_category')
 			->where('id', $id);
 		$result = $this->db->get()->result();
